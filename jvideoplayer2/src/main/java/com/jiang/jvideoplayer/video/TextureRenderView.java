@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.TextureView;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.jiang.jvideoplayer.listener.IRenderView;
 
@@ -28,4 +29,11 @@ public class TextureRenderView extends TextureView implements IRenderView{
     public View getView() {
         return null;
     }
+
+    @Override
+    public ViewGroup.LayoutParams getRenderLayoutParams() {
+        return null;
+    }
+
+
 }

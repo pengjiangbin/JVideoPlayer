@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.SurfaceView;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.jiang.jvideoplayer.listener.IRenderView;
 
@@ -33,6 +34,11 @@ public class SurfaceRenderView extends SurfaceView implements IRenderView {
     @Override
     public View getView() {
         return this;
+    }
+
+    @Override
+    public ViewGroup.LayoutParams getRenderLayoutParams() {
+        return null;
     }
 
 

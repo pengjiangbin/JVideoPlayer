@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.jiang.jvideoplayer.VideoPlayerListener;
+import com.jiang.jvideoplayer.listener.IRenderView;
 
 import java.io.IOException;
 
@@ -27,6 +28,7 @@ public class JVideoView extends FrameLayout{
     private String mVideoUrl;
     private IMediaPlayer mIMediaPlayer;
     private VideoPlayerListener mListener;
+    private RenderContainer mRenderContainer;
     public JVideoView(@NonNull Context context) {
         this(context,null);
     }
@@ -57,6 +59,10 @@ public class JVideoView extends FrameLayout{
         ViewGroup.LayoutParams params=new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         mSurfaceView.setLayoutParams(params);
         this.addView(mSurfaceView);
+    }
+
+    public void addRenderView(IRenderView renderView){
+        mRenderContainer=new RenderContainer();
     }
 
 
@@ -94,6 +100,7 @@ public class JVideoView extends FrameLayout{
             mIMediaPlayer.setOnPreparedListener(listener);
         }
     }
+
 
     private  class SurfaceCallback implements SurfaceHolder.Callback {
 
