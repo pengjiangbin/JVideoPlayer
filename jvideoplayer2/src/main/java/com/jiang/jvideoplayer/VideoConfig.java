@@ -16,5 +16,31 @@ public class VideoConfig {
     //全屏拉伸显示
     public static final int SCREEN_FIT_XY = 4;
 
+    public static final int RENDER_SURFACE = 0;
+
+    public static final int RENDER_TEXTURE = 1;
+
+    public static final int RENDER_GLSURFACE = 2;
+
+    private static int sScreenType = SCREEN_DEFAULT;
+
+    private static int sRenderType = RENDER_SURFACE;
+
+    public static int getRenderType() {
+        return sRenderType;
+    }
+
+    public static int getScreenType() {
+        return sScreenType;
+    }
+
+    public static void setRenderType(int renderType){
+        sRenderType=renderType;
+    }
+
+    public static void setScreenType(int screenType){
+        sScreenType=screenType;
+    }
+
 
 }

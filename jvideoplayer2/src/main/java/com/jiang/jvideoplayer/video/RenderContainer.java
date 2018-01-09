@@ -1,9 +1,15 @@
 package com.jiang.jvideoplayer.video;
 
+import android.content.Context;
+import android.view.Gravity;
 import android.view.SurfaceHolder;
+import android.view.TextureView;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
-import com.jiang.jvideoplayer.listener.IRenderView;
+import com.jiang.jvideoplayer.VideoConfig;
 
 /**
  * author: jiang
@@ -15,55 +21,46 @@ import com.jiang.jvideoplayer.listener.IRenderView;
 
 public class RenderContainer {
 
-    private IRenderView mRenderView;
+    private View mRenderView;
 
-    public void addRenderView(ViewGroup container,IRenderView renderView) {
-        if(container.getChildCount()>0){
-            container.removeAllViews();
+
+    public void addSurfaceRenderView(Context context, ViewGroup container, int rotate, SurfaceHolder.Callback callback) {
+        SurfaceRenderView surfaceRenderView = new SurfaceRenderView(context);
+        surfaceRenderView.getHolder().addCallback(callback);
+        surfaceRenderView.setRotation(rotate);
+        mRenderView = surfaceRenderView;
+        addToParent(container, surfaceRenderView);
+    }
+
+    public void addTextureRenderView(Context context, ViewGroup container, int rotate, TextureView.SurfaceTextureListener listener) {
+        TextureRenderView textureRenderView=new TextureRenderView(context);
+        textureRenderView.setSurfaceTextureListener(listener);
+        textureRenderView.setRotation(rotate);
+        mRenderView=textureRenderView;
+        addToParent(container,textureRenderView);
+    }
+
+    public void addToParent(ViewGroup container, View renderView) {
+        int param = getRenderParam();
+        if(container instanceof RelativeLayout){
+            RelativeLayout.LayoutParams params=new RelativeLayout.LayoutParams(param,param);
+            params.addRule(RelativeLayout.CENTER_IN_PARENT);
+            container.addView(renderView,params);
+        }else if(container instanceof FrameLayout){
+            FrameLayout.LayoutParams params=new FrameLayout.LayoutParams(param,param);
+            params.gravity= Gravity.CENTER;
+            container.addView(renderView,params);
         }
-        if(renderView instanceof SurfaceRenderView){
-            addSurfaceRenderView(container,(SurfaceRenderView)renderView);
-        }else if(renderView instanceof TextureRenderView){
-            addTextureRenderView(container,(TextureRenderView)renderView);
-        }
-
-        this.mRenderView = renderView;
     }
 
-    public void addSurfaceRenderView(ViewGroup container,SurfaceRenderView surfaceRenderView){
-    }
-
-    public void addTextureRenderView(ViewGroup container,TextureRenderView textureRenderView){
-
-    }
-
-    public IRenderView getRenderView(){
+    public View getRenderView() {
         return mRenderView;
     }
 
-    public ViewGroup.LayoutParams getLayoutParams(){
-        if(mRenderView!=null){
-            return mRenderView.getRenderLayoutParams();
-        }
-        return null;
+    public int getRenderParam() {
+        boolean typeChanged = (VideoConfig.getScreenType() != VideoConfig.SCREEN_DEFAULT);
+        return (typeChanged) ? ViewGroup.LayoutParams.WRAP_CONTENT : ViewGroup.LayoutParams.MATCH_PARENT;
     }
 
-    private  class SurfaceCallback implements SurfaceHolder.Callback {
-
-        @Override
-        public void surfaceCreated(SurfaceHolder holder) {
-
-        }
-
-        @Override
-        public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-
-        }
-
-        @Override
-        public void surfaceDestroyed(SurfaceHolder holder) {
-
-        }
-    }
 
 }
